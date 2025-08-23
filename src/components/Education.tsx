@@ -21,6 +21,7 @@ const Education = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timelineLineRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const educations: EducationItem[] = [
     {
@@ -63,59 +64,97 @@ const Education = () => {
     setVisibleItems(new Array(educations.length).fill(false));
   }, [educations.length]);
 
-  // Intersection Observer for loading animation (triggers every time)
+  // Improved Intersection Observer
   useEffect(() => {
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const index = parseInt(entry.target.getAttribute('data-index') || '0');
-          setVisibleItems(prev => {
-            const newVisible = [...prev];
-            newVisible[index] = entry.isIntersecting;
-            return newVisible;
-          });
+          
+          if (entry.isIntersecting) {
+            setVisibleItems(prev => {
+              const newVisible = [...prev];
+              newVisible[index] = true;
+              return newVisible;
+            });
+          } else {
+            // Only hide items that are far from viewport
+            const rect = entry.target.getBoundingClientRect();
+            if (rect.bottom < 0 || rect.top > window.innerHeight) {
+              setVisibleItems(prev => {
+                const newVisible = [...prev];
+                newVisible[index] = false;
+                return newVisible;
+              });
+            }
+          }
         });
       },
       {
         threshold: 0.3,
-        rootMargin: '0px 0px -100px 0px'
+        rootMargin: '0px 0px -10% 0px'
       }
     );
+
+    observerRef.current = observer;
 
     itemRefs.current.forEach((item) => {
       if (item) observer.observe(item);
     });
 
     return () => {
-      itemRefs.current.forEach((item) => {
-        if (item) observer.unobserve(item);
-      });
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
   }, []);
 
-  // Scroll handler for active index
+  // Improved scroll handler for active index
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || ticking) return;
       
-      const containerTop = containerRef.current.offsetTop;
-      const containerHeight = containerRef.current.offsetHeight;
-      const scrollY = window.scrollY + window.innerHeight / 2;
+      ticking = true;
       
-      const scrollPosition = scrollY - containerTop;
-      
-      if (scrollPosition >= 0 && scrollPosition < containerHeight) {
-        const itemHeight = containerHeight / educations.length;
-        const index = Math.min(
-          educations.length - 1,
-          Math.floor(scrollPosition / itemHeight)
-        );
-        setActiveIndex(index);
-      } else if (scrollY < containerTop) {
-        setActiveIndex(-1);
-      } else if (scrollY > containerTop + containerHeight) {
-        setActiveIndex(educations.length);
-      }
+      requestAnimationFrame(() => {
+        const containerTop = containerRef.current!.offsetTop;
+        const containerHeight = containerRef.current!.offsetHeight;
+        const scrollY = window.scrollY + window.innerHeight / 3; // Adjusted for better sensitivity
+        
+        const scrollPosition = scrollY - containerTop;
+        
+        if (scrollPosition >= 0 && scrollPosition < containerHeight) {
+          // Find which item is closest to the center of the viewport
+          let closestIndex = 0;
+          let minDistance = Infinity;
+          
+          itemRefs.current.forEach((item, index) => {
+            if (item) {
+              const rect = item.getBoundingClientRect();
+              const distance = Math.abs(rect.top + rect.height/2 - window.innerHeight/2);
+              
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = index;
+              }
+            }
+          });
+          
+          setActiveIndex(closestIndex);
+        } else if (scrollY < containerTop) {
+          setActiveIndex(-1);
+        } else if (scrollY > containerTop + containerHeight) {
+          setActiveIndex(educations.length);
+        }
+        
+        ticking = false;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });

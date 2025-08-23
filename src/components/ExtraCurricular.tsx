@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import {
   Trophy,
   Calendar,
-  MapPin,
 } from "lucide-react";
 import styles from "../styles/ExtraCurricular.module.css";
 
@@ -10,9 +9,8 @@ interface Activity {
   title: string;
   organization: string;
   period: string;
-  location: string;
   description: string;
-  category: "leadership" | "volunteer" | "creative" | "technical" | "sports";
+  category: "leadership" | "volunteer" | "creative" | "technical";
   gradient: string;
   photo?: string;
 }
@@ -26,57 +24,54 @@ const ExtraCurricular = () => {
   const activities: Activity[] = useMemo(
     () => [
       {
-        title: "Co-Lead Marketing",
+        title: "Co-Lead Marketing Idealize 2025",
         organization: "AIESEC in University of Moratuwa",
         period: "2025 - Present",
-        location: "Colombo, Sri Lanka",
         description:
           "Planning and executing promotional activities regarding the event and Leading the team.",
         category: "leadership",
         gradient: "from-blue-500 to-indigo-500",
-        photo: "/images/aiesec.jpg",
+        photo: "/oc.jpg",
       },
       {
-        title: "AIESEC Member",
+        title: "Best Performing Team Member",
         organization: "AIESEC in University of Moratuwa",
-        period: "2024 - 2025",
-        location: "Colombo, Sri Lanka",
+        period: "2024",
         description:
-          "Participated in international exchange programs and leadership development activities.",
+          "Awarded Best Performing oGV B2C Team Member for outstanding contribution.",
         category: "leadership",
         gradient: "from-blue-500 to-indigo-500",
-        photo: "/images/aiesec2.jpg",
+        photo: "/award.jpg",
       },
       {
-        title: "AIESEC Volunteer",
-        organization: "AIESEC in University of Moratuwa",
-        period: "2023 - 2024",
-        location: "Colombo, Sri Lanka",
+        title: "Innovate with Ballerina Idea Hackathon",
+        organization: "Organized by IEEE SB UOM & WSO2",
+        period: "2024",
         description:
-          "Volunteered for social impact projects and community development initiatives.",
-        category: "volunteer",
-        gradient: "from-purple-500 to-pink-500",
-        photo: "/images/aiesec3.jpg",
-      },
-      {
-        title: "IEEE WIE Member",
-        organization: "IEEE Women in Engineering",
-        period: "2022 - 2024",
-        location: "University of Colombo",
-        description:
-          "Participated in workshops, mentoring sessions, and community outreach initiatives supporting women in tech.",
-        category: "volunteer",
-        gradient: "from-purple-500 to-pink-500",
-      },
-      {
-        title: "Hackathon Winner",
-        organization: "University Tech Competition",
-        period: "2023",
-        location: "Colombo, Sri Lanka",
-        description:
-          "Developed an innovative solution for sustainable energy management using IoT technology.",
+          "Recognized as one of the most popular innovations in the hackathon.",
         category: "technical",
         gradient: "from-yellow-500 to-orange-500",
+        photo: "/ballerina.jpg",
+      },
+      {
+        title: "Design Committee Member - FestX 5.0 | HackElite 1.0",
+        organization: "IEEE Women in Engineering UOM",
+        period: "2024",
+        description:
+          "Designing promotional materials for events.",
+        category: "volunteer",
+        gradient: "from-purple-500 to-pink-500",
+        photo: "/wie.jpg",
+      },
+      {
+        title: "Infinity’25 Participation",
+        organization: "AIESEC in Si Lanka",
+        period: "2025",
+        description:
+          "Participated in Infinity National Conference 2025, engaging in leadership development, strategic collaboration sessions, and national-level networking with delegates from across Sri Lanka.",
+        category: "volunteer",
+        gradient: "from-purple-500 to-pink-500",
+        photo: "/infinity.jpg",
       },
     ],
     []
@@ -298,10 +293,6 @@ const ExtraCurricular = () => {
                             <span className={styles.metaItem}>
                               <Calendar className={styles.metaIcon} />{" "}
                               {activity.period}
-                            </span>
-                            <span className={styles.metaItem}>
-                              <MapPin className={styles.metaIcon} />{" "}
-                              {activity.location}
                             </span>
                           </div>
                         </div>
