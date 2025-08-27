@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import {
-  Trophy,
-  Calendar,
-} from "lucide-react";
-import styles from "../styles/ExtraCurricular.module.css";
+import { Trophy, Calendar } from "lucide-react";
 
 interface Activity {
   title: string;
@@ -64,7 +60,7 @@ const ExtraCurricular = () => {
         photo: "/wie.jpg",
       },
       {
-        title: "Infinity’25 Participation",
+        title: "Infinity'25 Participation",
         organization: "AIESEC in Si Lanka",
         period: "2025",
         description:
@@ -96,7 +92,7 @@ const ExtraCurricular = () => {
 
   // Create circular array with enough duplicates for smooth infinite scroll
   const circularActivities = useMemo(() => {
-    const duplicateCount = Math.max(visibleCards * 2, 4); // Ensure enough duplicates
+    const duplicateCount = Math.max(visibleCards * 2, 4);
     const result = [];
     
     // Add activities before the main set
@@ -170,11 +166,10 @@ const ExtraCurricular = () => {
         const currentCardIndex = Math.round(container.scrollLeft / cardWidth);
         
         // More precise boundary detection
-        const leftBoundary = duplicateCount - 1; // When we're near the end of the left duplicates
-        const rightBoundary = duplicateCount + activities.length + 1; // When we're near the start of right duplicates
+        const leftBoundary = duplicateCount - 1;
+        const rightBoundary = duplicateCount + activities.length + 1;
         
         if (currentCardIndex <= leftBoundary) {
-          // Scrolled too far left - jump to equivalent position in the main section
           const positionInDuplicates = currentCardIndex;
           const equivalentMainIndex = positionInDuplicates % activities.length;
           const newPosition = (mainStartIndex + activities.length - activities.length + equivalentMainIndex) * cardWidth;
@@ -188,7 +183,6 @@ const ExtraCurricular = () => {
           });
           
         } else if (currentCardIndex >= rightBoundary) {
-          // Scrolled too far right - jump to equivalent position in the main section
           const positionInRightDuplicates = currentCardIndex - rightBoundary;
           const equivalentMainIndex = positionInRightDuplicates % activities.length;
           const newPosition = (mainStartIndex + equivalentMainIndex) * cardWidth;
@@ -201,7 +195,7 @@ const ExtraCurricular = () => {
             });
           });
         }
-      }, 100); // Slightly longer delay for smoother experience
+      }, 100);
       
       // Update current index for dots indicator (real-time)
       const currentCardIndex = Math.round(scrollLeft / cardWidth);
@@ -235,71 +229,258 @@ const ExtraCurricular = () => {
     }, 500);
   };
 
-  return (
-    <div className={styles.container}>
-      {/* Background Elements */}
-      <div className={styles.backgroundLayer}>
-        <div className={styles.gridPattern} />
-        <div className={styles.ambientLight1} />
-        <div className={styles.ambientLight2} />
-      </div>
+  const getCardWidth = () => {
+    if (visibleCards === 3) return "calc(33.333% - 1.333rem)";
+    if (visibleCards === 2) return "calc(50% - 1rem)";
+    return "calc(100% - 2rem)";
+  };
 
-      <div className={styles.contentWrapper}>
+  const containerStyle: React.CSSProperties = {
+    minHeight: "100vh",
+    position: "relative",
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "4rem 2rem",
+  };
+
+  const contentWrapperStyle: React.CSSProperties = {
+    position: "relative",
+    zIndex: 10,
+    width: "100%",
+    maxWidth: "1200px",
+    margin: "0 auto",
+  };
+
+  const sectionHeaderStyle: React.CSSProperties = {
+    textAlign: "center",
+    marginBottom: "4rem",
+  };
+
+  const iconWrapperStyle: React.CSSProperties = {
+    display: "inline-flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "0.75rem",
+    borderRadius: "9999px",
+    background: "linear-gradient(to right, #6366f1, #8b5cf6)",
+    marginBottom: "1rem",
+  };
+
+  const titleStyle: React.CSSProperties = {
+    fontSize: "2.5rem",
+    fontWeight: "bold",
+    background: "linear-gradient(to right, #818cf8, #a78bfa)",
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    color: "transparent",
+    marginBottom: "1.5rem",
+    margin: 0,
+    padding: 0,
+  };
+
+  const dividerStyle: React.CSSProperties = {
+    width: "6rem",
+    height: "0.25rem",
+    margin: "0 auto 1rem",
+    borderRadius: "9999px",
+    background: "linear-gradient(to right, #818cf8, #a78bfa)",
+  };
+
+  const subtitleStyle: React.CSSProperties = {
+    color: "#9ca3af",
+    fontSize: "1.125rem",
+    margin: 0,
+  };
+
+  const scrollWrapperStyle: React.CSSProperties = {
+    position: "relative",
+    overflow: "hidden",
+    padding: "0 0 1rem 0",
+  };
+
+  const scrollContainerStyle: React.CSSProperties = {
+    display: "flex",
+    overflowX: "auto",
+    overflowY: "hidden",
+    gap: "2rem",
+    padding: "1rem",
+    scrollSnapType: "none",
+    scrollbarWidth: "none",
+    scrollBehavior: "auto",
+    WebkitOverflowScrolling: "touch",
+    backfaceVisibility: "hidden",
+    transform: "translateZ(0)",
+  };
+
+  const cardWrapperStyle: React.CSSProperties = {
+    scrollSnapAlign: "none",
+    transition: "transform 0.3s ease, opacity 0.3s ease",
+    flex: "0 0 auto",
+    willChange: "transform",
+    backfaceVisibility: "hidden",
+    transform: "translateZ(0)",
+    width: getCardWidth(),
+  };
+
+  const cardStyle: React.CSSProperties = {
+    background: "linear-gradient(to bottom right, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9))",
+    backdropFilter: "blur(10px)",
+    borderRadius: "1rem",
+    padding: "1.5rem",
+    border: "1px solid rgba(99, 102, 241, 0.3)",
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+    height: "100%",
+    position: "relative",
+    overflow: "hidden",
+    minHeight: "300px",
+  };
+
+  const photoContainerStyle: React.CSSProperties = {
+    position: "relative",
+    width: "100%",
+    height: "160px",
+    borderRadius: "0.75rem",
+    overflow: "hidden",
+    marginBottom: "1rem",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  };
+
+  const photoStyle: React.CSSProperties = {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+    filter: "brightness(0.9)",
+  };
+
+  const photoOverlayStyle: React.CSSProperties = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.6) 100%)",
+    transition: "opacity 0.3s ease",
+  };
+
+  const activityTitleStyle: React.CSSProperties = {
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+    color: "white",
+    marginBottom: "0.5rem",
+    lineHeight: 1.3,
+    transition: "color 0.3s ease",
+  };
+
+  const organizationStyle: React.CSSProperties = {
+    color: "#a5b4fc",
+    fontWeight: 500,
+    fontSize: "1rem",
+    marginBottom: "0.75rem",
+    transition: "color 0.3s ease",
+  };
+
+  const metaItemStyle: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    color: "#9ca3af",
+    fontSize: "0.85rem",
+    transition: "color 0.3s ease",
+    marginBottom: "1rem",
+  };
+
+  const descriptionStyle: React.CSSProperties = {
+    color: "#d1d5db",
+    lineHeight: 1.6,
+    fontSize: "0.9rem",
+    transition: "color 0.3s ease",
+    marginTop: "auto",
+  };
+
+  const dotsStyle: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "center",
+    gap: "0.75rem",
+    marginTop: "2rem",
+    padding: "1rem 0",
+  };
+
+  const dotStyle: React.CSSProperties = {
+    width: "0.75rem",
+    height: "0.75rem",
+    borderRadius: "50%",
+    background: "#4b5563",
+    border: "none",
+    cursor: "pointer",
+    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+    position: "relative",
+    outline: "none",
+  };
+
+  const activeDotStyle: React.CSSProperties = {
+    ...dotStyle,
+    background: "linear-gradient(45deg, #8b5cf6, #a78bfa)",
+    boxShadow: "0 0 15px rgba(139, 92, 246, 0.6)",
+  };
+
+  return (
+    <div style={containerStyle}>
+      <div style={contentWrapperStyle}>
         {/* Section Header */}
-        <div className={styles.sectionHeader}>
-          <div className={styles.iconWrapper}>
-            <Trophy className={styles.icon} />
+        <div style={sectionHeaderStyle}>
+          <div style={iconWrapperStyle}>
+            <Trophy style={{ width: "2rem", height: "2rem", color: "white" }} />
           </div>
-          <h2 className={styles.title}>Beyond Academics</h2>
-          <div className={styles.divider} />
-          <p className={styles.subtitle}>
+          <h2 style={titleStyle}>Beyond Academics</h2>
+          <div style={dividerStyle} />
+          <p style={subtitleStyle}>
             Leadership, Volunteering and Participation in Hackathons
           </p>
         </div>
 
         {/* Activity Cards */}
-        <div className={styles.scrollWrapper}>
-          <div ref={scrollRef} className={styles.scrollContainer}>
+        <div style={scrollWrapperStyle}>
+          <div ref={scrollRef} style={scrollContainerStyle}>
             {circularActivities.map((activity, i) => (
               <div 
                 key={`${activity.id || i}`}
-                className={`${styles.cardWrapper} ${styles[`show${visibleCards}`]}`}
+                style={cardWrapperStyle}
               >
-                <div className={styles.card}>
-                  <div className={styles.cardContent}>
-                    {/* Photo on left side */}
+                <div style={cardStyle}>
+                  <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                    {/* Photo */}
                     {activity.photo && (
-                      <div className={styles.photoContainer}>
+                      <div style={photoContainerStyle}>
                         <img
                           src={activity.photo}
                           alt={activity.title}
-                          className={styles.photo}
+                          style={photoStyle}
                         />
-                        <div className={styles.photoOverlay}></div>
+                        <div style={photoOverlayStyle}></div>
                       </div>
                     )}
 
-                    {/* Description on right side */}
-                    <div className={styles.descriptionContainer}>
-                      <div className={styles.cardHeader}>
-                        <div className={styles.cardTitle}>
-                          <h3 className={styles.activityTitle}>
-                            {activity.title}
-                          </h3>
-                          <p className={styles.organization}>
-                            {activity.organization}
-                          </p>
-                          <div className={styles.meta}>
-                            <span className={styles.metaItem}>
-                              <Calendar className={styles.metaIcon} />{" "}
-                              {activity.period}
-                            </span>
-                          </div>
+                    {/* Description */}
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                      <div style={{ marginBottom: "1rem" }}>
+                        <h3 style={activityTitleStyle}>
+                          {activity.title}
+                        </h3>
+                        <p style={organizationStyle}>
+                          {activity.organization}
+                        </p>
+                        <div style={metaItemStyle}>
+                          <Calendar style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />
+                          <span>{activity.period}</span>
                         </div>
                       </div>
 
                       {/* Description */}
-                      <p className={styles.description}>
+                      <p style={descriptionStyle}>
                         {activity.description}
                       </p>
                     </div>
@@ -311,15 +492,13 @@ const ExtraCurricular = () => {
 
           {/* Dots Indicator */}
           {activities.length > 0 && (
-            <div className={styles.dots}>
+            <div style={dotsStyle}>
               {activities.map((_, idx) => (
                 <button
                   type="button"
                   key={idx}
                   onClick={() => scrollToActivity(idx)}
-                  className={`${styles.dot} ${
-                    currentIndex === idx ? styles.activeDot : ""
-                  }`}
+                  style={currentIndex === idx ? activeDotStyle : dotStyle}
                   aria-label={`Go to activity ${idx + 1}`}
                 />
               ))}
