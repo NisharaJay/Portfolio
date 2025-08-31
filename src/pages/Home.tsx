@@ -27,7 +27,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
   const dynamicWords = [
     "Full-Stack Developer",
     "Problem Solver",
-    "AI ML Enthusiastic",
+    "AI ML Enthusiast",
     "Creator",
   ];
 

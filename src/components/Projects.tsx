@@ -7,7 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import styles from "../styles/Projects.module.css";
+import { Box, Typography, styled } from "@mui/material";
 
 interface Project {
   id: number;
@@ -20,6 +20,369 @@ interface Project {
   liveUrl?: string;
 }
 
+// Styled components
+const Container = styled(Box)(({ theme }) => ({
+  minHeight: "100vh",
+  position: "relative",
+  overflow: "hidden",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(4, 2),
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(3, 2),
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: theme.spacing(2, 1.5),
+  },
+}));
+
+const BackgroundLayer = styled(Box)({
+  position: "absolute",
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  pointerEvents: "none",
+});
+
+const GridPattern = styled(Box)({
+  position: "absolute",
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  opacity: 0.03,
+  backgroundImage:
+    "radial-gradient(circle at 2px 2px, #64748b 1px, transparent 0)",
+  backgroundSize: "50px 50px",
+});
+
+const AmbientLight = styled(Box)({
+  position: "absolute",
+  borderRadius: "50%",
+  filter: "blur(40px)",
+});
+
+const AmbientLight1 = styled(AmbientLight)({
+  top: "20%",
+  right: "20%",
+  width: "300px",
+  height: "300px",
+  background:
+    "radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%)",
+});
+
+const AmbientLight2 = styled(AmbientLight)({
+  bottom: "20%",
+  left: "20%",
+  width: "250px",
+  height: "250px",
+  background:
+    "radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%)",
+});
+
+const ContentWrapper = styled(Box)(({ theme }) => ({
+  position: "relative",
+  zIndex: 10,
+  width: "100%",
+  maxWidth: "1200px",
+  margin: theme.spacing(1, "auto"),
+  [theme.breakpoints.down("md")]: {
+    maxWidth: "100%",
+  },
+}));
+
+const SectionHeader = styled(Box)({
+  textAlign: "center",
+  marginBottom: "2rem",
+});
+
+const IconWrapper = styled(Box)({
+  display: "inline-flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "0.75rem",
+  borderRadius: "9999px",
+  background: "linear-gradient(to right, #6366f1, #8b5cf6)",
+  marginBottom: 0,
+});
+
+const Title = styled(Typography)({
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  background: "linear-gradient(to right, #818cf8, #a78bfa)",
+  WebkitBackgroundClip: "text",
+  backgroundClip: "text",
+  color: "transparent",
+  marginBottom: "1.5rem",
+  "@media (max-width: 768px)": {
+    fontSize: "2rem",
+  },
+  "@media (max-width: 480px)": {
+    fontSize: "1.8rem",
+  },
+});
+
+const Divider = styled(Box)({
+  width: "6rem",
+  height: "0.25rem",
+  margin: "0 auto 1rem",
+  borderRadius: "9999px",
+  background: "linear-gradient(to right, #818cf8, #a78bfa)",
+});
+
+const Subtitle = styled(Typography)({
+  color: "#9ca3af",
+  fontSize: "1.125rem",
+});
+
+const ProjectsGrid = styled(Box)(() => ({
+  display: "grid",
+  gap: "2rem",
+  gridTemplateColumns: "repeat(3, minmax(0, 320px))",
+  gridTemplateRows: "auto auto",
+  justifyContent: "center",
+  justifyItems: "center",
+  "@media (max-width: 1200px)": {
+    gridTemplateColumns: "repeat(2, minmax(0, 320px))",
+    justifyContent: "center",
+  },
+  "@media (max-width: 768px)": {
+    gridTemplateColumns: "1fr",
+    gap: "1.5rem",
+    justifyContent: "center",
+  },
+}));
+
+interface ProjectCardProps {
+  isVisible: boolean;
+}
+
+const ProjectCard = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isVisible",
+})<ProjectCardProps>(({ isVisible }) => ({
+  width: "100%",
+  maxWidth: "320px",
+  borderRadius: "1.5rem",
+  backdropFilter: "blur(10px)",
+  background: "rgba(31, 41, 55, 0.7)",
+  border: "1px solid rgba(99, 102, 241, 0.2)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  overflow: "hidden",
+  position: "relative",
+  opacity: isVisible ? 1 : 0,
+  transform: isVisible ? "translateY(0)" : "translateY(20px)",
+  "&:hover": {
+    transform: "translateY(-8px)",
+    borderColor: "rgba(99, 102, 241, 0.4)",
+    boxShadow: "0 15px 40px rgba(99, 102, 241, 0.25)",
+  },
+  "@media (max-width: 768px)": {
+    maxWidth: "400px",
+  },
+  "@media (max-width: 480px)": {
+    maxWidth: "100%",
+    margin: "0 8px",
+  },
+}));
+
+const LoadingAnimation = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "rgba(31, 41, 55, 0.8)",
+  zIndex: 5,
+  transition: "opacity 0.3s ease",
+});
+
+const LoadingSpinner = styled(Box)({
+  width: "40px",
+  height: "40px",
+  border: "3px solid rgba(99, 102, 241, 0.3)",
+  borderRadius: "50%",
+  borderTopColor: "#6366f1",
+  animation: "spin 1s ease-in-out infinite",
+  "@keyframes spin": {
+    to: { transform: "rotate(360deg)" },
+  },
+});
+
+const ImageContainer = styled(Box)({
+  position: "relative",
+  height: "200px",
+  overflow: "hidden",
+  "&:hover .hoverOverlay": {
+    opacity: 1,
+  },
+  "&:hover .imageOverlay": {
+    opacity: 1,
+  },
+  "@media (max-width: 480px)": {
+    height: "180px",
+  },
+});
+
+const ProjectImage = styled("img")({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  transition: "transform 0.3s ease, opacity 0.5s ease",
+});
+
+const HoverOverlay = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "rgba(0, 0, 0, 0.4)",
+  opacity: 0,
+  transition: "opacity 0.3s ease",
+  zIndex: 1,
+});
+
+const ImageOverlay = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "rgba(0, 0, 0, 0.6)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  opacity: 0,
+  transition: "opacity 0.3s ease",
+  zIndex: 2,
+});
+
+const ProjectLinks = styled(Box)({
+  display: "flex",
+  gap: "1rem",
+});
+
+const LinkButton = styled("button")({
+  padding: "0.75rem",
+  borderRadius: "50%",
+  background: "rgba(139, 92, 246, 0.9)",
+  border: "none",
+  color: "white",
+  cursor: "pointer",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    background: "rgba(139, 92, 246, 1)",
+    transform: "scale(1.1)",
+  },
+});
+
+const CarouselContainer = styled(Box)({
+  position: "relative",
+  height: "100%",
+});
+
+const CarouselNav = styled("button")({
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-50%)",
+  background: "rgba(0, 0, 0, 0.5)",
+  border: "none",
+  color: "white",
+  width: "30px",
+  height: "30px",
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  zIndex: 3,
+  opacity: 0,
+  transition: "opacity 0.3s ease",
+  "@media (max-width: 768px)": {
+    opacity: 1,
+  },
+});
+
+const CarouselPrev = styled(CarouselNav)({
+  left: "10px",
+});
+
+const CarouselNext = styled(CarouselNav)({
+  right: "10px",
+});
+
+const ProjectContent = styled(Box)(() => ({
+  padding: "1.5rem",
+  "@media (max-width: 768px)": {
+    padding: "1.25rem",
+  },
+  "@media (max-width: 480px)": {
+    padding: "1rem",
+  },
+}));
+
+const ProjectHeader = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  marginBottom: "1rem",
+  "@media (max-width: 768px)": {
+    flexDirection: "column",
+    gap: "0.5rem",
+    alignItems: "flex-start",
+  },
+});
+
+const ProjectTitle = styled(Typography)({
+  fontSize: "1.25rem",
+  fontWeight: "bold",
+  color: "white",
+  margin: 0,
+  "@media (max-width: 480px)": {
+    fontSize: "1.1rem",
+  },
+});
+
+const ProjectYear = styled(Box)({
+  display: "flex",
+  alignItems: "center",
+  gap: "0.25rem",
+  color: "#9ca3af",
+  fontSize: "0.9rem",
+});
+
+const ProjectDescription = styled(Typography)({
+  color: "#d1d5db",
+  marginBottom: "1.5rem",
+  lineHeight: 1.6,
+});
+
+const TechStack = styled(Box)({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "0.5rem",
+});
+
+const TechTag = styled(Box)({
+  background: "rgba(55, 65, 81, 0.6)",
+  color: "#d1d5db",
+  padding: "0.25rem 0.75rem",
+  borderRadius: "9999px",
+  fontSize: "0.8rem",
+  border: "1px solid rgba(148, 163, 184, 0.3)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    borderColor: "rgba(139, 92, 246, 0.5)",
+    color: "white",
+    background: "rgba(99, 102, 241, 0.2)",
+  },
+});
+
 const Projects = () => {
   const projects: Project[] = [
     {
@@ -30,7 +393,7 @@ const Projects = () => {
       year: "2025",
       images: ["/Portfolio.png"],
       githubUrl: "https://github.com/yourusername/portfolio",
-      liveUrl: "https://your-portfolio.com",
+      liveUrl: "https://nisharajay.netlify.app/",
     },
     {
       id: 2,
@@ -109,42 +472,58 @@ const Projects = () => {
     };
   }, []);
 
+  // Grid positioning for different screen sizes
+  const getGridPosition = (index: number) => {
+    if (window.innerWidth >= 1200) {
+      // Desktop layout
+      if (index < 3) return { gridRow: 1 };
+      return { gridColumn: `${index - 2} / ${index - 1}`, gridRow: 2 };
+    } else if (window.innerWidth >= 768) {
+      // Tablet layout
+      if (index < 2) return { gridRow: 1 };
+      if (index < 4) return { gridRow: 2 };
+      if (index === 4)
+        return { gridRow: 3, gridColumn: "1 / 3", justifySelf: "center" };
+    }
+    // Mobile layout - no special positioning
+    return {};
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.backgroundLayer}>
-        <div className={styles.gridPattern} />
-        <div className={styles.ambientLight1} />
-        <div className={styles.ambientLight2} />
-      </div>
+    <Container>
+      <BackgroundLayer>
+        <GridPattern />
+        <AmbientLight1 />
+        <AmbientLight2 />
+      </BackgroundLayer>
 
-      <div className={styles.contentWrapper}>
-        <div className={styles.sectionHeader}>
-          <div className={styles.iconWrapper}>
-            <Code className={styles.icon} />
-          </div>
-          <h2 className={styles.title}>Featured Projects</h2>
-          <div className={styles.divider} />
-          <p className={styles.subtitle}>
+      <ContentWrapper>
+        <SectionHeader>
+          <IconWrapper style={{ marginBottom:"1.5rem"}}>
+            <Code style={{ width: "2rem", height: "2rem", color: "white"}} />
+          </IconWrapper>
+          <Title variant="h2">Featured Projects</Title>
+          <Divider />
+          <Subtitle variant="subtitle1">
             Some of my recent work and contributions
-          </p>
-        </div>
+          </Subtitle>
+        </SectionHeader>
 
-        <div className={styles.projectsGrid}>
+        <ProjectsGrid>
           {projects.map((project, index) => (
-            <div
+            <ProjectCard
               key={project.id}
               ref={(el) => {
-                projectRefs.current[index] = el;
+                projectRefs.current[index] = el as HTMLDivElement | null;
               }}
               data-id={project.id}
-              className={`${styles.projectCard} ${
-                visibleProjects.includes(project.id) ? styles.visible : ""
-              }`}
+              isVisible={visibleProjects.includes(project.id)}
+              sx={getGridPosition(index)}
             >
               {!visibleProjects.includes(project.id) && (
-                <div className={styles.loadingAnimation}>
-                  <div className={styles.loadingSpinner} />
-                </div>
+                <LoadingAnimation>
+                  <LoadingSpinner />
+                </LoadingAnimation>
               )}
 
               <ImageCarousel
@@ -155,32 +534,30 @@ const Projects = () => {
                 liveUrl={project.liveUrl}
               />
 
-              <div className={styles.projectContent}>
-                <div className={styles.projectHeader}>
-                  <h3 className={styles.projectTitle}>{project.title}</h3>
-                  <span className={styles.projectYear}>
-                    <Calendar className={styles.yearIcon} />
+              <ProjectContent>
+                <ProjectHeader>
+                  <ProjectTitle variant="h3">{project.title}</ProjectTitle>
+                  <ProjectYear>
+                    <Calendar style={{ width: "1rem", height: "1rem" }} />
                     {project.year}
-                  </span>
-                </div>
+                  </ProjectYear>
+                </ProjectHeader>
 
-                <p className={styles.projectDescription}>
+                <ProjectDescription variant="body1">
                   {project.description}
-                </p>
+                </ProjectDescription>
 
-                <div className={styles.techStack}>
-                  {project.tech.map((tech, index) => (
-                    <span key={index} className={styles.techTag}>
-                      {tech}
-                    </span>
+                <TechStack>
+                  {project.tech.map((tech, techIndex) => (
+                    <TechTag key={techIndex}>{tech}</TechTag>
                   ))}
-                </div>
-              </div>
-            </div>
+                </TechStack>
+              </ProjectContent>
+            </ProjectCard>
           ))}
-        </div>
-      </div>
-    </div>
+        </ProjectsGrid>
+      </ContentWrapper>
+    </Container>
   );
 };
 
@@ -247,15 +624,15 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   };
 
   return (
-    <div className={styles.imageContainer}>
-      <div className={styles.carouselContainer}>
+    <ImageContainer>
+      <CarouselContainer>
         {images.map((image, index) => (
-          <img
+          <ProjectImage
             key={index}
             src={image}
             alt={`${title} - Image ${index + 1}`}
-            className={styles.projectImage}
-            style={{
+            className="projectImage"
+            sx={{
               opacity: index === currentIndex ? 1 : 0,
               position: index === currentIndex ? "relative" : "absolute",
               top: 0,
@@ -265,49 +642,49 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           />
         ))}
 
+        <HoverOverlay className="hoverOverlay" />
+        
         {images.length > 1 && (
           <>
-            <button
-              className={`${styles.carouselNav} ${styles.carouselPrev}`}
+            <CarouselPrev
+              className="carouselNav"
               onClick={prevImage}
               aria-label="Previous image"
             >
               <ChevronLeft size={20} />
-            </button>
-            <button
-              className={`${styles.carouselNav} ${styles.carouselNext}`}
+            </CarouselPrev>
+            <CarouselNext
+              className="carouselNav"
               onClick={nextImage}
               aria-label="Next image"
             >
               <ChevronRight size={20} />
-            </button>
+            </CarouselNext>
           </>
         )}
 
-        <div className={styles.imageOverlay}>
-          <div className={styles.projectLinks}>
+        <ImageOverlay className="imageOverlay">
+          <ProjectLinks>
             {liveUrl && (
-              <button
-                className={styles.linkButton}
+              <LinkButton
                 aria-label="View Live Project"
                 onClick={(e) => handleLinkClick(e, liveUrl)}
               >
-                <ExternalLink className={styles.linkIcon} />
-              </button>
+                <ExternalLink style={{ width: "1.25rem", height: "1.25rem" }} />
+              </LinkButton>
             )}
             {githubUrl && (
-              <button
-                className={styles.linkButton}
+              <LinkButton
                 aria-label="View Source Code"
                 onClick={(e) => handleLinkClick(e, githubUrl)}
               >
-                <Github className={styles.linkIcon} />
-              </button>
+                <Github style={{ width: "1.25rem", height: "1.25rem" }} />
+              </LinkButton>
             )}
-          </div>
-        </div>
-      </div>
-    </div>
+          </ProjectLinks>
+        </ImageOverlay>
+      </CarouselContainer>
+    </ImageContainer>
   );
 };
 

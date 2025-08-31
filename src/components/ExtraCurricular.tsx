@@ -1,4 +1,16 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Stack,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { Trophy, Calendar } from "lucide-react";
 
 interface Activity {
@@ -11,7 +23,200 @@ interface Activity {
   photo?: string;
 }
 
-const ExtraCurricular = () => {
+// Styled Components
+const MainContainer = styled(Box)(({ theme }) => ({
+  minHeight: "100vh",
+  position: "relative",
+  overflow: "hidden",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(8, 4),
+}));
+
+const ContentWrapper = styled(Box)({
+  position: "relative",
+  zIndex: 10,
+  width: "100%",
+  maxWidth: "1200px",
+  margin: "0 auto",
+});
+
+const HeaderContainer = styled(Box)(({ theme }) => ({
+  textAlign: "center",
+  marginBottom: theme.spacing(8),
+}));
+
+const IconWrapper = styled(Box)({
+  display: "inline-flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "12px",
+  borderRadius: "9999px",
+  background: "linear-gradient(to right, #6366f1, #8b5cf6)",
+  marginBottom: "16px",
+});
+
+const GradientTitle = styled(Typography)({
+  fontSize: "2.5rem",
+  fontWeight: "bold",
+  background: "linear-gradient(to right, #818cf8, #a78bfa)",
+  WebkitBackgroundClip: "text",
+  backgroundClip: "text",
+  color: "transparent",
+  marginBottom: "24px",
+  margin: 0,
+  padding: 0,
+});
+
+const Divider = styled(Box)({
+  width: "96px",
+  height: "4px",
+  margin: "14px auto 16px",
+  borderRadius: "9999px",
+  background: "linear-gradient(to right, #818cf8, #a78bfa)",
+});
+
+const SubTitle = styled(Typography)({
+  color: "#9ca3af",
+  fontSize: "1.125rem",
+  margin: 0,
+});
+
+const ScrollWrapper = styled(Box)({
+  position: "relative",
+  overflow: "hidden",
+  padding: "0 0 16px 0",
+});
+
+const ScrollContainer = styled(Box)({
+  display: "flex",
+  overflowX: "auto",
+  overflowY: "hidden",
+  gap: "32px",
+  padding: "16px",
+  scrollSnapType: "none",
+  scrollbarWidth: "none",
+  scrollBehavior: "auto",
+  WebkitOverflowScrolling: "touch",
+  backfaceVisibility: "hidden",
+  transform: "translateZ(0)",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+});
+
+const CardWrapper = styled(Box)<{ visiblecards: number }>(({ visiblecards }) => ({
+  scrollSnapAlign: "none",
+  transition: "transform 0.3s ease, opacity 0.3s ease",
+  flex: "0 0 auto",
+  willChange: "transform",
+  backfaceVisibility: "hidden",
+  transform: "translateZ(0)",
+  width: visiblecards === 3 ? "calc(33.333% - 21.33px)" : 
+         visiblecards === 2 ? "calc(50% - 16px)" : 
+         "calc(100% - 32px)",
+}));
+
+const ActivityCard = styled(Card)({
+  background: "linear-gradient(to bottom right, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9))",
+  backdropFilter: "blur(10px)",
+  borderRadius: "16px",
+  padding: "24px",
+  border: "1px solid rgba(99, 102, 241, 0.3)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+  height: "100%",
+  position: "relative",
+  overflow: "hidden",
+  minHeight: "400px",
+  display: "flex",
+  flexDirection: "column",
+});
+
+const PhotoContainer = styled(Box)({
+  position: "relative",
+  width: "100%",
+  height: "160px",
+  borderRadius: "12px",
+  overflow: "hidden",
+  marginBottom: "16px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+});
+
+const PhotoOverlay = styled(Box)({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.6) 100%)",
+  transition: "opacity 0.3s ease",
+});
+
+const ActivityTitle = styled(Typography)({
+  fontSize: "1.25rem",
+  fontWeight: "bold",
+  color: "white",
+  marginBottom: "8px",
+  lineHeight: 1.3,
+  transition: "color 0.3s ease",
+});
+
+const Organization = styled(Typography)({
+  color: "#a5b4fc",
+  fontWeight: 500,
+  fontSize: "1rem",
+  marginBottom: "12px",
+  transition: "color 0.3s ease",
+});
+
+const MetaItem = styled(Stack)({
+  color: "#9ca3af",
+  fontSize: "0.85rem",
+  transition: "color 0.3s ease",
+  marginBottom: "16px",
+});
+
+const Description = styled(Typography)({
+  color: "#d1d5db",
+  lineHeight: 1.6,
+  fontSize: "0.9rem",
+  transition: "color 0.3s ease",
+  marginTop: "auto",
+});
+
+const DotsContainer = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  gap: theme.spacing(1.5),
+  marginTop: theme.spacing(4),
+  padding: theme.spacing(2, 0),
+}));
+
+const DotButton = styled(IconButton)<{ active?: boolean }>(({ active }) => ({
+  width: "12px",
+  height: "12px",
+  borderRadius: "50%",
+  background: active ? "linear-gradient(45deg, #8b5cf6, #a78bfa)" : "#4b5563",
+  border: "none",
+  cursor: "pointer",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  position: "relative",
+  outline: "none",
+  padding: 0,
+  minWidth: "auto",
+  boxShadow: active ? "0 0 15px rgba(139, 92, 246, 0.6)" : "none",
+  "&:hover": {
+    background: active ? "linear-gradient(45deg, #8b5cf6, #a78bfa)" : "#6b7280",
+  },
+}));
+
+const ExtraCurricular: React.FC = () => {
+  const theme = useTheme();
+  const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isLgUp = useMediaQuery(theme.breakpoints.up("lg"));
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
@@ -53,8 +258,7 @@ const ExtraCurricular = () => {
         title: "Design Committee Member - FestX 5.0 | HackElite 1.0",
         organization: "IEEE Women in Engineering UOM",
         period: "2024",
-        description:
-          "Designing promotional materials for events.",
+        description: "Designing promotional materials for events.",
         category: "volunteer",
         gradient: "from-purple-500 to-pink-500",
         photo: "/wie.jpg",
@@ -75,20 +279,14 @@ const ExtraCurricular = () => {
 
   // Update visible cards based on screen size
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1200) {
-        setVisibleCards(3);
-      } else if (window.innerWidth >= 768) {
-        setVisibleCards(2);
-      } else {
-        setVisibleCards(1);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    if (isLgUp) {
+      setVisibleCards(3);
+    } else if (isMdUp) {
+      setVisibleCards(2);
+    } else {
+      setVisibleCards(1);
+    }
+  }, [isLgUp, isMdUp]);
 
   // Create circular array with enough duplicates for smooth infinite scroll
   const circularActivities = useMemo(() => {
@@ -229,284 +427,94 @@ const ExtraCurricular = () => {
     }, 500);
   };
 
-  const getCardWidth = () => {
-    if (visibleCards === 3) return "calc(33.333% - 1.333rem)";
-    if (visibleCards === 2) return "calc(50% - 1rem)";
-    return "calc(100% - 2rem)";
-  };
-
-  const containerStyle: React.CSSProperties = {
-    minHeight: "100vh",
-    position: "relative",
-    overflow: "hidden",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "4rem 2rem",
-  };
-
-  const contentWrapperStyle: React.CSSProperties = {
-    position: "relative",
-    zIndex: 10,
-    width: "100%",
-    maxWidth: "1200px",
-    margin: "0 auto",
-  };
-
-  const sectionHeaderStyle: React.CSSProperties = {
-    textAlign: "center",
-    marginBottom: "4rem",
-  };
-
-  const iconWrapperStyle: React.CSSProperties = {
-    display: "inline-flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "0.75rem",
-    borderRadius: "9999px",
-    background: "linear-gradient(to right, #6366f1, #8b5cf6)",
-    marginBottom: "1rem",
-  };
-
-  const titleStyle: React.CSSProperties = {
-    fontSize: "2.5rem",
-    fontWeight: "bold",
-    background: "linear-gradient(to right, #818cf8, #a78bfa)",
-    WebkitBackgroundClip: "text",
-    backgroundClip: "text",
-    color: "transparent",
-    marginBottom: "1.5rem",
-    margin: 0,
-    padding: 0,
-  };
-
-  const dividerStyle: React.CSSProperties = {
-    width: "6rem",
-    height: "0.25rem",
-    margin: "0 auto 1rem",
-    borderRadius: "9999px",
-    background: "linear-gradient(to right, #818cf8, #a78bfa)",
-  };
-
-  const subtitleStyle: React.CSSProperties = {
-    color: "#9ca3af",
-    fontSize: "1.125rem",
-    margin: 0,
-  };
-
-  const scrollWrapperStyle: React.CSSProperties = {
-    position: "relative",
-    overflow: "hidden",
-    padding: "0 0 1rem 0",
-  };
-
-  const scrollContainerStyle: React.CSSProperties = {
-    display: "flex",
-    overflowX: "auto",
-    overflowY: "hidden",
-    gap: "2rem",
-    padding: "1rem",
-    scrollSnapType: "none",
-    scrollbarWidth: "none",
-    scrollBehavior: "auto",
-    WebkitOverflowScrolling: "touch",
-    backfaceVisibility: "hidden",
-    transform: "translateZ(0)",
-  };
-
-  const cardWrapperStyle: React.CSSProperties = {
-    scrollSnapAlign: "none",
-    transition: "transform 0.3s ease, opacity 0.3s ease",
-    flex: "0 0 auto",
-    willChange: "transform",
-    backfaceVisibility: "hidden",
-    transform: "translateZ(0)",
-    width: getCardWidth(),
-  };
-
-  const cardStyle: React.CSSProperties = {
-    background: "linear-gradient(to bottom right, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.9))",
-    backdropFilter: "blur(10px)",
-    borderRadius: "1rem",
-    padding: "1.5rem",
-    border: "1px solid rgba(99, 102, 241, 0.3)",
-    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
-    height: "100%",
-    position: "relative",
-    overflow: "hidden",
-    minHeight: "300px",
-  };
-
-  const photoContainerStyle: React.CSSProperties = {
-    position: "relative",
-    width: "100%",
-    height: "160px",
-    borderRadius: "0.75rem",
-    overflow: "hidden",
-    marginBottom: "1rem",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  };
-
-  const photoStyle: React.CSSProperties = {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-    filter: "brightness(0.9)",
-  };
-
-  const photoOverlayStyle: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: "linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.6) 100%)",
-    transition: "opacity 0.3s ease",
-  };
-
-  const activityTitleStyle: React.CSSProperties = {
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-    color: "white",
-    marginBottom: "0.5rem",
-    lineHeight: 1.3,
-    transition: "color 0.3s ease",
-  };
-
-  const organizationStyle: React.CSSProperties = {
-    color: "#a5b4fc",
-    fontWeight: 500,
-    fontSize: "1rem",
-    marginBottom: "0.75rem",
-    transition: "color 0.3s ease",
-  };
-
-  const metaItemStyle: React.CSSProperties = {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.5rem",
-    color: "#9ca3af",
-    fontSize: "0.85rem",
-    transition: "color 0.3s ease",
-    marginBottom: "1rem",
-  };
-
-  const descriptionStyle: React.CSSProperties = {
-    color: "#d1d5db",
-    lineHeight: 1.6,
-    fontSize: "0.9rem",
-    transition: "color 0.3s ease",
-    marginTop: "auto",
-  };
-
-  const dotsStyle: React.CSSProperties = {
-    display: "flex",
-    justifyContent: "center",
-    gap: "0.75rem",
-    marginTop: "2rem",
-    padding: "1rem 0",
-  };
-
-  const dotStyle: React.CSSProperties = {
-    width: "0.75rem",
-    height: "0.75rem",
-    borderRadius: "50%",
-    background: "#4b5563",
-    border: "none",
-    cursor: "pointer",
-    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-    position: "relative",
-    outline: "none",
-  };
-
-  const activeDotStyle: React.CSSProperties = {
-    ...dotStyle,
-    background: "linear-gradient(45deg, #8b5cf6, #a78bfa)",
-    boxShadow: "0 0 15px rgba(139, 92, 246, 0.6)",
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={contentWrapperStyle}>
+    <MainContainer>
+      <ContentWrapper>
         {/* Section Header */}
-        <div style={sectionHeaderStyle}>
-          <div style={iconWrapperStyle}>
-            <Trophy style={{ width: "2rem", height: "2rem", color: "white" }} />
-          </div>
-          <h2 style={titleStyle}>Beyond Academics</h2>
-          <div style={dividerStyle} />
-          <p style={subtitleStyle}>
+        <HeaderContainer>
+          <IconWrapper>
+            <Trophy size={32} color="white" />
+          </IconWrapper>
+          <GradientTitle>Beyond Academics</GradientTitle>
+          <Divider />
+          <SubTitle>
             Leadership, Volunteering and Participation in Hackathons
-          </p>
-        </div>
+          </SubTitle>
+        </HeaderContainer>
 
         {/* Activity Cards */}
-        <div style={scrollWrapperStyle}>
-          <div ref={scrollRef} style={scrollContainerStyle}>
+        <ScrollWrapper>
+          <ScrollContainer ref={scrollRef}>
             {circularActivities.map((activity, i) => (
-              <div 
+              <CardWrapper 
                 key={`${activity.id || i}`}
-                style={cardWrapperStyle}
+                visiblecards={visibleCards}
               >
-                <div style={cardStyle}>
-                  <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                    {/* Photo */}
-                    {activity.photo && (
-                      <div style={photoContainerStyle}>
-                        <img
-                          src={activity.photo}
-                          alt={activity.title}
-                          style={photoStyle}
-                        />
-                        <div style={photoOverlayStyle}></div>
-                      </div>
-                    )}
+                <ActivityCard>
+                  <CardContent sx={{ padding: 0, height: "100%", "&:last-child": { paddingBottom: 0 } }}>
+                    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                      {/* Photo */}
+                      {activity.photo && (
+                        <PhotoContainer>
+                          <CardMedia
+                            component="img"
+                            image={activity.photo}
+                            alt={activity.title}
+                            sx={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                              filter: "brightness(0.9)",
+                            }}
+                          />
+                          <PhotoOverlay />
+                        </PhotoContainer>
+                      )}
 
-                    {/* Description */}
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                      <div style={{ marginBottom: "1rem" }}>
-                        <h3 style={activityTitleStyle}>
-                          {activity.title}
-                        </h3>
-                        <p style={organizationStyle}>
-                          {activity.organization}
-                        </p>
-                        <div style={metaItemStyle}>
-                          <Calendar style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />
-                          <span>{activity.period}</span>
-                        </div>
-                      </div>
+                      {/* Content */}
+                      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                        <Box sx={{ marginBottom: "16px" }}>
+                          <ActivityTitle>
+                            {activity.title}
+                          </ActivityTitle>
+                          <Organization>
+                            {activity.organization}
+                          </Organization>
+                          <MetaItem direction="row" alignItems="center" spacing={1}>
+                            <Calendar size={16} />
+                            <span>{activity.period}</span>
+                          </MetaItem>
+                        </Box>
 
-                      {/* Description */}
-                      <p style={descriptionStyle}>
-                        {activity.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        {/* Description */}
+                        <Description>
+                          {activity.description}
+                        </Description>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </ActivityCard>
+              </CardWrapper>
             ))}
-          </div>
+          </ScrollContainer>
 
           {/* Dots Indicator */}
           {activities.length > 0 && (
-            <div style={dotsStyle}>
+            <DotsContainer>
               {activities.map((_, idx) => (
-                <button
-                  type="button"
+                <DotButton
                   key={idx}
+                  active={currentIndex === idx}
                   onClick={() => scrollToActivity(idx)}
-                  style={currentIndex === idx ? activeDotStyle : dotStyle}
                   aria-label={`Go to activity ${idx + 1}`}
                 />
               ))}
-            </div>
+            </DotsContainer>
           )}
-        </div>
-      </div>
-    </div>
+        </ScrollWrapper>
+      </ContentWrapper>
+    </MainContainer>
   );
 };
 

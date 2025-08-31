@@ -524,9 +524,11 @@ const Education = () => {
                           {edu.degree}
                         </Heading>
 
-                        <VStack
-                          gap={1}
-                          align={{ base: "center", sm: "flex-start" }}
+                        {/* Fixed alignment for small screens */}
+                        <Box
+                          display="flex"
+                          flexDirection={{ base: "column", sm: "row" }}
+                          gap={{ base: 2, sm: 4 }}
                           mb={3}
                           opacity={isVisible ? 1 : 0}
                           transform={
@@ -535,17 +537,28 @@ const Education = () => {
                           transition="all 0.8s ease-out"
                           transitionDelay={`${index * 0.2 + 0.2}s`}
                         >
-                          <HStack gap={2} color="purple.300">
+                          {/* Year */}
+                          <HStack 
+                            gap={2} 
+                            color="purple.300"
+                            justifyContent={{ base: "center", sm: "flex-start" }}
+                          >
                             <Calendar size={16} />
                             <Text fontSize="sm" fontWeight="medium">
                               {edu.year}
                             </Text>
                           </HStack>
-                          <HStack gap={2} color="purple.300">
+                          
+                          {/* Institution - Fixed alignment for small screens */}
+                          <HStack 
+                            gap={2} 
+                            color="purple.300"
+                            justifyContent={{ base: "center", sm: "flex-start" }}
+                          >
                             <MapPin size={16} />
                             <Text fontSize="sm">{edu.institution}</Text>
                           </HStack>
-                        </VStack>
+                        </Box>
 
                         {edu.score && (
                           <Badge
@@ -559,6 +572,7 @@ const Education = () => {
                             transform={isVisible ? "scale(1)" : "scale(0.8)"}
                             transition="all 0.8s ease-out"
                             transitionDelay={`${index * 0.2 + 0.4}s`}
+                            display="inline-block"
                           >
                             {edu.score}
                           </Badge>
@@ -574,6 +588,7 @@ const Education = () => {
                           }
                           transition="all 0.8s ease-out"
                           transitionDelay={`${index * 0.2 + 0.5}s`}
+                          textAlign={{ base: "center", sm: "left" }}
                         >
                           {edu.description}
                         </Text>
