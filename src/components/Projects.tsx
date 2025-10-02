@@ -17,7 +17,7 @@ interface Project {
   year: string;
   images: string[];
   githubUrl?: string;
-  liveUrl?: string;
+  dockerHubUrl?: string;
 }
 
 // Styled components
@@ -387,16 +387,37 @@ const Projects = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: "Portfolio Website",
-      description: "Personal portfolio with modern design and animations",
-      tech: ["Vite", "TypeScript"],
+      title: "Moodify",
+      description: "Music Recommendation Chatbot based on User's Mood.",
+      tech: ["Python", "PyTorch", "HuggingFace Transformers", "LangChain", "Chroma", "FastAPI", "Next.js", "Docker"],
       year: "2025",
-      images: ["/Portfolio.png"],
-      githubUrl: "https://github.com/yourusername/portfolio",
-      liveUrl: "https://nisharajay.netlify.app/",
+      images: ["/moodify.png"],
+      githubUrl: "https://github.com/yourusername/moodify-chat",
+      dockerHubUrl: "https://hub.docker.com/repository/docker/nisharajay/moodify-chat-backend",
     },
     {
       id: 2,
+      title: "LeafCare",
+      description:
+        "A CNN-based system to recognize 38 plant diseases with Dockerized deployment.",
+      tech: ["Python", "TensorFlow/Keras", "Scikit-learn", "Streamlit", "MongoDB"],
+      year: "2025",
+      images: ["/leaf-image-upload.png", "/leaf-disease-analysis.png"],
+      githubUrl: "https://github.com/NisharaJay/leaf-care-app",
+      dockerHubUrl: "https://hub.docker.com/repository/docker/nisharajay/leaf-care-app",
+    },
+    {
+      id: 3,
+      title: "English Grammar Corrector",
+      description:
+        "A T5-based AI system to automatically improves sentence grammar correctness.",
+      tech: ["Python", "PyTorch", "HuggingFace Transformers", "FastAPI", "Next.js"],
+      year: "2025",
+      images: ["/grammar.png"],
+      githubUrl: "https://github.com/NisharaJay/english-grammar-corrector",
+    },
+    {
+      id: 4,
       title: "PresCrypt",
       description:
         "Doctor-Patient Management System - Mentored by Creative Software",
@@ -413,7 +434,7 @@ const Projects = () => {
       githubUrl: "https://github.com/TechGenPioneers/PresCrypt",
     },
     {
-      id: 3,
+      id: 5,
       title: "StrayCare",
       description: "Volunteering Platform for Stray Animals",
       tech: ["React", "MongoDB", "Tailwind CSS", "Ballerina"],
@@ -422,17 +443,7 @@ const Projects = () => {
       githubUrl: "https://github.com/AnjanaNimesh/Stray-Care-Ballerina",
     },
     {
-      id: 4,
-      title: "Expense Tracker",
-      description:
-        "A platform to track expenses and visualize data with login authentication",
-      tech: ["Next.js", "MongoDB", "Tailwind CSS"],
-      year: "2025",
-      images: ["/Expense.png"],
-      githubUrl: "https://github.com/NisharaJay/Expense-Tracker",
-    },
-    {
-      id: 5,
+      id: 6,
       title: "Smart Exam Hall",
       description:
         "A system to automate several operational tasks within exam halls.",
@@ -531,7 +542,7 @@ const Projects = () => {
                 title={project.title}
                 isVisible={visibleProjects.includes(project.id)}
                 githubUrl={project.githubUrl}
-                liveUrl={project.liveUrl}
+                liveUrl={project.dockerHubUrl}
               />
 
               <ProjectContent>

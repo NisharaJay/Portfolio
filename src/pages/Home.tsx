@@ -25,9 +25,9 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
 
   const name = "Nishara Jayakody";
   const dynamicWords = [
+    "AI/ML Enthusiast",
     "Full-Stack Developer",
     "Problem Solver",
-    "AI ML Enthusiast",
     "Creator",
   ];
 
@@ -158,7 +158,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
             sx={{
               fontWeight: 100,
               mb: 1,
-              mt: { xs: 2, lg: 1 }, // Reduced top margin
+              mt: { xs: 2, lg: 3 }, // Reduced top margin
               fontSize: { xs: "2rem", sm: "2.5rem", lg: "3rem" }, // Responsive font size
             }}
           >
@@ -236,7 +236,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
                 }}
               />
               <Avatar
-                src="/profile.png"
+                src="/profile.jpg"
                 alt="Nishara"
                 sx={{
                   width: { xs: 220, sm: 260, lg: 380 }, // Reduced size on larger screens
@@ -276,12 +276,12 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
               }}
             >
               I’m a motivated and adaptable third-year IT undergraduate with a
-              strong passion for full-stack development and problem-solving.
+              strong foundation and passion for machine learning, deep learning,
+              and data-driven problem solving and full-stack development.
               With a proactive mindset, I’m always eager to gain hands-on
               experience, collaborate with others, and deliver impactful
-              solutions. I enjoy taking on challenges that allow me to explore
-              new technologies and expand my skill set, particularly in web and
-              mobile application development.
+              solutions. I enjoy solving challenging problems, exploring new
+              technologies, and turning ideas into real solutions.
               <br />
               <br />
               Beyond tech, I enjoy content creation and have a growing interest
@@ -368,7 +368,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
                     transform: "translateY(-3px)",
                   },
                 }}
-                onClick={() => window.open("/CV.pdf", "_blank")}
+                onClick={() => window.open("/Nishara Jayakody.pdf", "_blank")}
                 startIcon={<Download size={16} />}
               >
                 View CV

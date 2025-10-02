@@ -9,59 +9,50 @@ import {
 } from '@mui/material';
 import { Activity } from 'lucide-react';
 
+// Skill interface
 interface Skill {
   name: string;
   level: number;
   iconPath?: string;
 }
 
-interface SkillCategory {
-  name: string;
-  skills: Skill[];
-}
+// All skills in one flat list
+const allSkills: Skill[] = [
+  { name: "Python", level: 70, iconPath: "/Python.svg" },
+  { name: "TensorFlow / Keras", level: 75, iconPath: "/TensorFlow.svg" },
+  { name: "PyTorch", level: 75, iconPath: "/PyTorch.svg" },
+  { name: "LangChain", level: 70, iconPath: "/langchain.png" },
+  { name: "Pandas", level: 85, iconPath: "/Pandas.svg" },
+  { name: "Scikit-learn", level: 80, iconPath: "/scikit-learn.svg" },
+  { name: "NumPy", level: 85, iconPath: "/NumPy.svg" },
+  { name: "FastAPI", level: 80, iconPath: "/FastAPI.svg" },
+  { name: "C", level: 85, iconPath: "/C.svg" },
+  { name: "C#", level: 85, iconPath: "/CSharp.svg" },
+  { name: "Java", level: 70, iconPath: "/Java.svg" },
+  { name: "JavaScript", level: 70, iconPath: "/JavaScript.svg" },
+  { name: "TypeScript", level: 70, iconPath: "/TypeScript.svg" },
 
-const skillCategories: SkillCategory[] = [
-  {
-    name: "Programming",
-    skills: [
-      { name: "C", level: 85, iconPath: "/C.svg" },
-      { name: "C#", level: 85, iconPath: "/CSharp.svg" },
-      { name: "Java", level: 70, iconPath: "/Java.svg" },
-      { name: "Python", level: 70, iconPath: "/Python.svg" },
-      { name: "JavaScript", level: 70, iconPath: "/JavaScript.svg" },
-      { name: "TypeScript", level: 70, iconPath: "/TypeScript.svg" },
-    ],
-  },
-  {
-    name: "Web Development",
-    skills: [
-      { name: "React", level: 90, iconPath: "/react.svg" },
-      { name: "Next.js", level: 85, iconPath: "/Next.js.svg" },
-      { name: "Vite.js", level: 85, iconPath: "/Vite.js.svg" },
-      { name: "Tailwind CSS", level: 88, iconPath: "/TailwindCSS.svg" },
-      { name: "HTML", level: 95, iconPath: "/HTML5.svg" },
-      { name: "CSS", level: 90, iconPath: "/CSS3.svg" },
-      { name: "Node.js", level: 85, iconPath: "/Node.js.svg" },
-      { name: "ASP.Net Core", level: 70, iconPath: "/NETcore.svg" },
-    ],
-  },
-  {
-    name: "Database",
-    skills: [
-      { name: "MySQL", level: 85, iconPath: "/MySQL.svg" },
-      { name: "MSSQL", level: 70, iconPath: "/MSSQL.svg" },
-      { name: "MongoDB", level: 70, iconPath: "/MongoDB.svg" },
-    ],
-  },
-  {
-    name: "Other",
-    skills: [
-      { name: "Figma", level: 70, iconPath: "/Figma.svg" },
-    ],
-  },
+  // Web Development
+  { name: "React", level: 90, iconPath: "/react.svg" },
+  { name: "Next.js", level: 85, iconPath: "/Next.js.svg" },
+  { name: "Vite.js", level: 85, iconPath: "/Vite.js.svg" },
+  { name: "Tailwind CSS", level: 88, iconPath: "/TailwindCSS.svg" },
+  { name: "HTML", level: 95, iconPath: "/HTML5.svg" },
+  { name: "CSS", level: 90, iconPath: "/CSS3.svg" },
+  { name: "Node.js", level: 85, iconPath: "/Node.js.svg" },
+  { name: "ASP.Net Core", level: 70, iconPath: "/NETcore.svg" },
+
+  // Database
+  { name: "MySQL", level: 85, iconPath: "/MySQL.svg" },
+  { name: "MSSQL", level: 70, iconPath: "/MSSQL.svg" },
+  { name: "MongoDB", level: 70, iconPath: "/MongoDB.svg" },
+
+  //other tools
+  { name: "Docker", level: 80, iconPath: "/Docker.svg" },
+  { name: "Figma", level: 70, iconPath: "/Figma.svg" },
 ];
 
-// Styled components
+// Styled components (unchanged)
 const BackgroundLayer = styled(Box)({
   position: 'absolute',
   top: 0,
@@ -159,12 +150,11 @@ const SkillsBox = styled(Box)({
   margin: '0 auto',
 });
 
+// Component
 const Skills: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isSmallMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
-  const allSkills = skillCategories.flatMap((cat) => cat.skills);
 
   return (
     <Box
@@ -178,7 +168,7 @@ const Skills: React.FC = () => {
         padding: isSmallMobile ? '2rem 1rem' : isMobile ? '2rem 1rem' : '4rem 2rem',
       }}
     >
-      {/* Background Elements */}
+      {/* Background */}
       <BackgroundLayer>
         <GridPattern />
         <Box
@@ -216,7 +206,7 @@ const Skills: React.FC = () => {
           margin: '0 auto' 
         }}
       >
-        {/* Section Header */}
+        {/* Header */}
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <IconWrapper>
             <Activity style={{ width: '2rem', height: '2rem', color: 'white' }} />
@@ -248,7 +238,7 @@ const Skills: React.FC = () => {
           </Typography>
         </Box>
 
-        {/* Single Skills Box */}
+        {/* Skills */}
         <SkillsBox sx={{ gap: isSmallMobile ? '1rem' : isMobile ? '1.5rem' : '2rem' }}>
           {allSkills.map((skill) => (
             <SkillIconWrapper 
