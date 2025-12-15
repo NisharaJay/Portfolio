@@ -135,20 +135,18 @@ const App = () => {
         <Home onTypingComplete={() => setTypingComplete(true)} />
       </section>
 
-      {/* Education Section */}
-      <section id="education" className="min-h-screen bg-gray-900 text-white relative z-10">
-        <Education />
+      {/* Projects Section */}
+      <section id="projects" className="min-h-screen bg-gray-900 text-white relative z-10">
+        <Projects />
       </section>
+  
 
       {/* Skills Section */}
       <section id="skills" className="min-h-screen bg-black text-white px-8 py-16 relative z-10">
         <Skills />
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="min-h-screen bg-gray-900 text-white relative z-10">
-        <Projects />
-      </section>
+     
 
       {/* Extra Curricular Section */}
       <section id="extra" className="min-h-screen bg-black text-white relative z-10">

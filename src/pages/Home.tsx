@@ -3,7 +3,6 @@ import {
   Github,
   Linkedin,
   ExternalLink,
-  Download,
   Mail,
   MapPin,
 } from "lucide-react";
@@ -204,10 +203,10 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", lg: "1fr 2fr" },
-            gap: { xs: 3, lg: 4 }, // Reduced gap on larger screens
+            gap: { xs: 3, lg: 4 }, 
             alignItems: "center",
             width: "100%",
-            mt: { xs: 2, lg: 0 }, // Remove top margin on larger screens
+            mt: { xs: 2, lg: 0 }, 
           }}
         >
           {/* Photo */}
@@ -351,27 +350,6 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
                 endIcon={<ExternalLink size={16} />}
               >
                 View My Work
-              </Button>
-
-              <Button
-                variant="contained"
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  borderRadius: "2rem",
-                  fontWeight: 600,
-                  textTransform: "none",
-                  background: "linear-gradient(135deg, #8b5cf6, #7c3aed)",
-                  color: "#fff",
-                  "&:hover": {
-                    background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
-                    transform: "translateY(-3px)",
-                  },
-                }}
-                onClick={() => window.open("/Nishara Jayakody.pdf", "_blank")}
-                startIcon={<Download size={16} />}
-              >
-                View CV
               </Button>
             </Stack>
 
