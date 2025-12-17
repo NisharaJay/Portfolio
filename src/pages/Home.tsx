@@ -137,28 +137,27 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
         sx={{
           position: "relative",
           zIndex: 10,
-          minHeight: { xs: "100vh", lg: "90vh" }, // Reduced height on larger screens
+          minHeight: { xs: "100vh", lg: "90vh" },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center", // Center vertically
+          justifyContent: "center", 
           px: { xs: 2, md: 4 },
           maxWidth: 1400,
           mx: "auto",
-          pt: { xs: 2, lg: 0 }, // Remove top padding on larger screens
+          pt: { xs: 2, lg: 0 }, 
         }}
       >
         {/* Header */}
         <Box sx={{ textAlign: "center", mb: { xs: 3, lg: 2 } }}>
           {" "}
-          {/* Reduced bottom margin */}
           <Typography
             variant="h3"
             sx={{
               fontWeight: 100,
               mb: 1,
-              mt: { xs: 2, lg: 3 }, // Reduced top margin
-              fontSize: { xs: "2rem", sm: "2.5rem", lg: "3rem" }, // Responsive font size
+              mt: { xs: 2, lg: 3 }, 
+              fontSize: { xs: "2rem", sm: "2.5rem", lg: "3rem" }, 
             }}
           >
             Hi, I'm{" "}
@@ -189,9 +188,9 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
             variant="h5"
             sx={{
               color: "#a855f7",
-              mt: { xs: 2, lg: 1 }, // Reduced top margin
+              mt: { xs: 2, lg: 1 }, 
               mb: { xs: 0, lg: 8 },
-              fontSize: { xs: "1.2rem", sm: "1.5rem", lg: "1.75rem" }, // Responsive font size
+              fontSize: { xs: "1.2rem", sm: "1.5rem", lg: "1.75rem" }, 
             }}
           >
             {dynamicWords[currentWord]}
@@ -214,7 +213,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
             sx={{
               display: "flex",
               justifyContent: { xs: "center", lg: "flex-start" },
-              mt: { xs: 0, lg: -2 }, // Negative margin to pull up on larger screens
+              mt: { xs: 0, lg: -2 }, 
             }}
           >
             <Box sx={{ position: "relative" }}>
@@ -238,10 +237,10 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
                 src="/profile.jpg"
                 alt="Nishara"
                 sx={{
-                  width: { xs: 220, sm: 260, lg: 380 }, // Reduced size on larger screens
+                  width: { xs: 220, sm: 260, lg: 380 },
                   height: { xs: 220, sm: 260, lg: 380 },
                   border: "3px solid rgba(139,92,246,0.4)",
-                  transform: "translateY(0)", // Removed translateY
+                  transform: "translateY(0)", 
                   boxShadow:
                     "0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.1), 0 0 25px rgba(139,92,246,0.4)",
                   transition: "all 0.6s cubic-bezier(0.4,0,0.2,1)",
@@ -260,7 +259,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
             sx={{
               textAlign: { xs: "center", lg: "left" },
               px: { xs: 0, md: 2 },
-              mt: { xs: 0, lg: -2 }, // Negative margin to pull up on larger screens
+              mt: { xs: 0, lg: -2 }, 
             }}
           >
             <Typography
@@ -296,7 +295,7 @@ const Home: React.FC<HomeProps> = ({ onTypingComplete }) => {
             >
               {" "}
               {/* Reduced bottom margin */}
-              {["Full-Stack", "UI/UX", "Problem Solving"].map((skill) => (
+              {["Full-Stack", "AI/ML", "Problem Solving"].map((skill) => (
                 <Box
                   key={skill}
                   sx={{

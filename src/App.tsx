@@ -10,22 +10,19 @@ const App = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const rainContainerRef = useRef<HTMLDivElement>(null);
-  const typingCompletedRef = useRef(false); // Add ref to track typing completion
+  const typingCompletedRef = useRef(false); 
 
-  // Rain animation effect - create only after typing is complete
   useEffect(() => {
     if (!typingComplete || typingCompletedRef.current) return;
     
-    typingCompletedRef.current = true; // Mark as completed to prevent re-running
+    typingCompletedRef.current = true; 
     
     const createRainDots = () => {
       if (!rainContainerRef.current) return;
       
-      // Clear any existing dots
       rainContainerRef.current.innerHTML = '';
       
-      // Reduced number of dots for less visibility
-      const dotCount = 80; // Reduced from 120
+      const dotCount = 80;
       
       for (let i = 0; i < dotCount; i++) {
         const dot = document.createElement('div');
@@ -61,10 +58,8 @@ const App = () => {
       }
     };
 
-    // Create rain dots
     createRainDots();
-    
-    // Recreate dots on window resize to maintain proper distribution
+ 
     const handleResize = () => {
       createRainDots();
     };
@@ -73,9 +68,8 @@ const App = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [typingComplete]); // Only run when typingComplete changes
+  }, [typingComplete]); 
 
-  // Scroll section detection effect
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section');
