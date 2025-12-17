@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import Home from './pages/Home';
-import Education from './components/Education';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import ExtraCurricular from './components/ExtraCurricular';
@@ -32,18 +31,18 @@ const App = () => {
         const dot = document.createElement('div');
         dot.className = 'raindot';
         
-        // Randomize properties for natural look
-        const size = Math.random() * 4 + 2; // Slightly smaller dots (2-6px)
+        
+        const size = Math.random() * 4 + 2; 
         const left = Math.random() * 100;
         const animationDuration = (Math.random() * 6 + 6) + 's';
-        const animationDelay = (Math.random() * 5) + 's'; // Increased max delay to 5s
-        const opacity = Math.random() * 0.5 + 0.2; // Reduced opacity (0.2-0.7)
-        const startPosition = -20 - (Math.random() * 30); // Random start position above viewport
+        const animationDelay = (Math.random() * 5) + 's'; 
+        const opacity = Math.random() * 0.5 + 0.2;
+        const startPosition = -20 - (Math.random() * 30); 
         
         dot.style.width = `${size}px`;
         dot.style.height = `${size}px`;
         dot.style.left = `${left}%`;
-        dot.style.top = `${startPosition}vh`; // Set random start position
+        dot.style.top = `${startPosition}vh`; 
         dot.style.opacity = `${opacity}`;
         dot.style.animationDuration = animationDuration;
         dot.style.animationDelay = animationDelay;
@@ -51,11 +50,11 @@ const App = () => {
         // Add color variation with reduced visibility
         const colorVariation = Math.random();
         if (colorVariation < 0.3) {
-          dot.style.backgroundColor = 'rgba(180, 180, 255, 0.5)'; // More transparent
+          dot.style.backgroundColor = 'rgba(180, 180, 255, 0.5)'; 
         } else if (colorVariation < 0.6) {
-          dot.style.backgroundColor = 'rgba(200, 200, 255, 0.6)'; // More transparent
+          dot.style.backgroundColor = 'rgba(200, 200, 255, 0.6)'; 
         } else {
-          dot.style.backgroundColor = 'rgba(160, 200, 255, 0.4)'; // More transparent
+          dot.style.backgroundColor = 'rgba(160, 200, 255, 0.4)';
         }
         
         rainContainerRef.current.appendChild(dot);
