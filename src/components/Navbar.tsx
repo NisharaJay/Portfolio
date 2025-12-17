@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   Home,
-  GraduationCap,
   Code,
   FolderOpen,
   Trophy,
@@ -18,7 +17,6 @@ const Navbar = () => {
 
   const navItems = [
     { id: "home", label: "Home", icon: Home },
-    { id: "education", label: "Education", icon: GraduationCap },
     { id: "skills", label: "Skills", icon: Code },
     { id: "projects", label: "Projects", icon: FolderOpen },
     { id: "extra", label: "Highlights", icon: Trophy },
