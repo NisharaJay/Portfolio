@@ -140,13 +140,11 @@ const Subtitle = styled(Typography)({
 const ProjectsGrid = styled(Box)(() => ({
   display: "grid",
   gap: "2rem",
-  gridTemplateColumns: "repeat(3, minmax(0, 320px))",
-  gridTemplateRows: "auto auto",
+  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
   justifyContent: "center",
   justifyItems: "center",
   "@media (max-width: 1200px)": {
-    gridTemplateColumns: "repeat(2, minmax(0, 320px))",
-    justifyContent: "center",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
   },
   "@media (max-width: 768px)": {
     gridTemplateColumns: "1fr",
@@ -387,37 +385,6 @@ const Projects = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: "Moodify",
-      description: "Music Recommendation Chatbot based on User's Mood.",
-      tech: ["Python", "PyTorch", "HuggingFace Transformers", "LangChain", "Chroma", "FastAPI", "Next.js", "Docker"],
-      year: "2025",
-      images: ["/moodify.png"],
-      githubUrl: "https://github.com/yourusername/moodify-chat",
-      dockerHubUrl: "https://hub.docker.com/repository/docker/nisharajay/moodify-chat-backend",
-    },
-    {
-      id: 2,
-      title: "LeafCare",
-      description:
-        "A CNN-based system to recognize 38 plant diseases with Dockerized deployment.",
-      tech: ["Python", "TensorFlow/Keras", "Scikit-learn", "Streamlit", "MongoDB"],
-      year: "2025",
-      images: ["/leaf-image-upload.png", "/leaf-disease-analysis.png"],
-      githubUrl: "https://github.com/NisharaJay/leaf-care-app",
-      dockerHubUrl: "https://hub.docker.com/repository/docker/nisharajay/leaf-care-app",
-    },
-    {
-      id: 3,
-      title: "English Grammar Corrector",
-      description:
-        "A T5-based AI system to automatically improves sentence grammar correctness.",
-      tech: ["Python", "PyTorch", "HuggingFace Transformers", "FastAPI", "Next.js"],
-      year: "2025",
-      images: ["/grammar.png"],
-      githubUrl: "https://github.com/NisharaJay/english-grammar-corrector",
-    },
-    {
-      id: 4,
       title: "PresCrypt",
       description:
         "Doctor-Patient Management System - Mentored by Creative Software",
@@ -434,16 +401,75 @@ const Projects = () => {
       githubUrl: "https://github.com/TechGenPioneers/PresCrypt",
     },
     {
-      id: 5,
+      id: 2,
       title: "StrayCare",
-      description: "Volunteering Platform for Stray Animals",
+      description: "Volunteering Platform for Stray Animals - Contributed by developing the donation feature and integrated the PayHere gateway",
       tech: ["React", "MongoDB", "Tailwind CSS", "Ballerina"],
       year: "2024",
       images: ["/StrayCare.png"],
       githubUrl: "https://github.com/AnjanaNimesh/Stray-Care-Ballerina",
     },
     {
+      id: 3,
+      title: "English Grammar Corrector",
+      description:
+        "A T5-based AI system to automatically improves sentence grammar correctness.",
+      tech: ["Python", "PyTorch", "FastAPI", "HuggingFace Transformers", "Next.js"],
+      year: "2025",
+      images: ["/grammar.png"],
+      githubUrl: "https://github.com/NisharaJay/english-grammar-corrector",
+    },
+    {
+      id: 4,
+      title: "Moodify",
+      description: "Music Recommendation Chatbot based on User's Mood.",
+      tech: ["Python", "PyTorch",  "LangChain", "HuggingFace Transformers", "Chroma", "FastAPI", "Next.js", "Docker"],
+      year: "2025",
+      images: ["/moodify.png"],
+      githubUrl: "https://github.com/yourusername/moodify-chat",
+      dockerHubUrl: "https://hub.docker.com/repository/docker/nisharajay/moodify-chat-backend",
+    },
+    {
+      id: 5,
+      title: "FilmyTalks - Mobile App",
+      description: "Mobile app for browsing Sri Lankan films and reviews.",
+      tech: ["React Native (Expo CLI)", "MongoDB", "Node.js"],
+      year: "2025",
+      images: ["/mobile1.png", "/mobile2.png"],
+      githubUrl: "https://github.com/NisharaJay/filmy-talks-frontend",
+    },
+    {
       id: 6,
+      title: "Carvo",
+      description:
+        "Automobile Service Management System - Contributed by developing frontend Employee Portal features, including a dynamic dashboard",
+      tech: [" Next.js", "Tailwind CSS"],
+      year: "2025",
+      images: ["/carvo1.png"],
+      githubUrl: "https://github.com/ravndu-dlshan/asms-frontend",
+    },
+    {
+      id: 7,
+      title: "Graph-based Fraud Ring Detection",
+      description: "A graph-based ML pipeline using GraphSAGE to detect fraud rings in transaction networks.",
+      tech: ["Python", " PyTorch", "PyTorch Geometric", "NetworkX", "Scikit-learn", "Pandas"],
+      year: "2025",
+      images: ["/fraud1.png", "/fraud2.png"],
+      githubUrl: "https://github.com/NisharaJay/fraud-ring-detector",
+    },
+    {
+      id: 8,
+      title: "LeafCare",
+      description:
+        "A CNN-based system to recognize 38 plant diseases with Dockerized deployment.",
+      tech: ["Python", "TensorFlow/Keras", "Scikit-learn", "Streamlit", "MongoDB"],
+      year: "2025",
+      images: ["/leaf-image-upload.png", "/leaf-disease-analysis.png"],
+      githubUrl: "https://github.com/NisharaJay/leaf-care-app",
+      dockerHubUrl: "https://hub.docker.com/repository/docker/nisharajay/leaf-care-app",
+    },
+    {
+      id: 9,
       title: "Smart Exam Hall",
       description:
         "A system to automate several operational tasks within exam halls.",
@@ -483,23 +509,6 @@ const Projects = () => {
     };
   }, []);
 
-  // Grid positioning for different screen sizes
-  const getGridPosition = (index: number) => {
-    if (window.innerWidth >= 1200) {
-      // Desktop layout
-      if (index < 3) return { gridRow: 1 };
-      return { gridColumn: `${index - 2} / ${index - 1}`, gridRow: 2 };
-    } else if (window.innerWidth >= 768) {
-      // Tablet layout
-      if (index < 2) return { gridRow: 1 };
-      if (index < 4) return { gridRow: 2 };
-      if (index === 4)
-        return { gridRow: 3, gridColumn: "1 / 3", justifySelf: "center" };
-    }
-    // Mobile layout - no special positioning
-    return {};
-  };
-
   return (
     <Container>
       <BackgroundLayer>
@@ -529,7 +538,6 @@ const Projects = () => {
               }}
               data-id={project.id}
               isVisible={visibleProjects.includes(project.id)}
-              sx={getGridPosition(index)}
             >
               {!visibleProjects.includes(project.id) && (
                 <LoadingAnimation>
